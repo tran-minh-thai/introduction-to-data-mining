@@ -1,0 +1,8 @@
+Dataset,MinSupport,TotalTxns,k,CandidateSize(C_k),FrequentSize(L_k),PrunedCandidates,SubsetChecks,IO_Time(ms),Algo_Time(ms),PeakMemory(MB)
+chess,0.9,3196,1,75,13,0,0,47,488,38.87
+chess,0.9,3196,2,78,68,0,156,47,488,38.87
+chess,0.9,3196,3,267,167,68,766,47,488,38.87
+chess,0.9,3196,4,725,203,503,2279,47,488,38.87
+chess,0.9,3196,5,897,128,767,2773,47,488,38.87
+chess,0.9,3196,6,499,39,460,1393,47,488,38.87
+chess,0.9,3196,7,121,4,117,280,47,488,38.87

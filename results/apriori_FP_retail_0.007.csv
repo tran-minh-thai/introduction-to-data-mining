@@ -1,0 +1,5 @@
+Dataset,MinSupport,TotalTxns,k,CandidateSize(C_k),FrequentSize(L_k),PrunedCandidates,SubsetChecks,IO_Time(ms),Algo_Time(ms),PeakMemory(MB)
+retail,0.007,88162,1,16470,127,0,0,250,44744,252.17
+retail,0.007,88162,2,8001,133,0,16002,250,44744,252.17
+retail,0.007,88162,3,2914,48,2809,5066,250,44744,252.17
+retail,0.007,88162,4,354,7,344,565,250,44744,252.17
