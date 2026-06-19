@@ -7,33 +7,60 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * FP-GROWTH TESTER - Kiểm thử thuật toán FP-Growth
+ * 
+ * Chạy FP-Growth trên nhiều dataset và minSupport khác nhau
+ * So sánh hiệu năng với Apriori thông qua metrics
+ * 
+ * @author Data Mining Course
+ * @version 1.0
+ */
 public class FPGrowthTester {
+    /**
+     * Phương thức main
+     * 
+     * Cấu hình kiểm thử:
+     * - Chess dataset với minSupport = 0.9 (dense)
+     * - Retail dataset với minSupport = 0.007 (sparse)
+     * 
+     * Ghi chú:
+     * - FP-Growth thường nhanh hơn Apriori trên sparse dataset
+     * - FP-Tree nén dữ liệu tốt khi có pattern lặp lại
+     */
     public static void main(String[] args) {
+        // ===== ĐỊNH NGHĨA CÁC TEST CASE =====
         List<DatasetConfig> testCases = new ArrayList<>();
+        // Dense dataset
         testCases.add(new DatasetConfig("chess.txt", 0.9));
+        // Sparse dataset
         testCases.add(new DatasetConfig("retail.txt", 0.007));
 
         System.out.println("==================================================");
         System.out.println(" BẮT ĐẦU CHẠY KIỂM THỬ FP-GROWTH");
         System.out.println("==================================================\n");
 
+        // Tạo thư mục results nếu chưa có
         File resultsDir = new File("results");
         if (!resultsDir.exists()) {
             resultsDir.mkdir();
         }
 
+        // ===== THỰC THI TỪNG TEST CASE =====
         for (DatasetConfig testCase : testCases) {
             String inputPath = "datasets/" + testCase.fileName;
 
+            // Trích tên dataset (ví dụ: "chess.txt" -> "chess")
             String baseName = testCase.fileName.replaceFirst("[.][^.]+$", "");
 
-            // THAY ĐỔI: Chèn testCase.minSupport vào tên file
+            // Tên file xuất: fpgrowth_FP_{dataset}_{minSupport}
             String baseOutputPath = "results/fpgrowth_FP_" + baseName + "_" + testCase.minSupport;
 
             System.out.println("-> Đang xử lý: [" + testCase.fileName + "] với ngưỡng minSupport = " + testCase.minSupport);
             long startTime = System.currentTimeMillis();
 
             try {
+                // Gọi FP-Growth để khai phá itemset
                 FPGrowth.executeAndExport(inputPath, baseOutputPath, testCase.minSupport);
 
                 long duration = System.currentTimeMillis() - startTime;
@@ -55,9 +82,12 @@ public class FPGrowthTester {
         System.out.println("Hoàn thành toàn bộ quá trình kiểm thử FP-Growth!");
     }
 
+    /**
+     * Inner class cấu hình dataset
+     */
     static class DatasetConfig {
-        String fileName;
-        double minSupport;
+        String fileName;      // Tên file dataset
+        double minSupport;    // Ngưỡng support
 
         DatasetConfig(String fileName, double minSupport) {
             this.fileName = fileName;
