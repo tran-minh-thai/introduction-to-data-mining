@@ -7,33 +7,56 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * APRIORI TESTER - Kiểm thử thuật toán Apriori
+ * 
+ * Chạy Apriori trên nhiều dataset và minSupport khác nhau
+ * Ghi lại kết quả (itemset phổ biến) và metrics hiệu năng
+ * 
+ * @author Data Mining Course
+ * @version 1.0
+ */
 public class AprioriTester {
+    /**
+     * Phương thức main
+     * 
+     * Cấu hình kiểm thử:
+     * - Chess dataset với minSupport = 0.9 (90%) - dataset dày đặc
+     * - Retail dataset với minSupport = 0.007 (0.7%) - dataset thưa
+     */
     public static void main(String[] args) {
+        // ===== ĐỊNH NGHĨA CÁC TEST CASE =====
         List<DatasetConfig> testCases = new ArrayList<>();
+        // Dense dataset - minSupport cao
         testCases.add(new DatasetConfig("chess.txt", 0.9));
+        // Sparse dataset - minSupport thấp
         testCases.add(new DatasetConfig("retail.txt", 0.007));
 
         System.out.println("==================================================");
         System.out.println(" BẮT ĐẦU CHẠY KIỂM THỬ APRIORI - CHESS & RETAIL");
         System.out.println("==================================================\n");
 
+        // Tạo thư mục results nếu chưa có
         File resultsDir = new File("results");
         if (!resultsDir.exists()) {
             resultsDir.mkdir();
         }
 
+        // ===== THỰC THI TỪNG TEST CASE =====
         for (DatasetConfig testCase : testCases) {
             String inputPath = "datasets/" + testCase.fileName;
 
+            // Trích tên dataset từ tên file (ví dụ: "chess.txt" -> "chess")
             String baseName = testCase.fileName.replaceFirst("[.][^.]+$", "");
 
-            // THAY ĐỔI: Chèn testCase.minSupport vào tên file baseOutputPath
+            // Tên file xuất: apriori_FP_{dataset}_{minSupport}
             String baseOutputPath = "results/apriori_FP_" + baseName + "_" + testCase.minSupport;
 
             System.out.println("-> Đang xử lý: [" + testCase.fileName + "] với ngưỡng minSupport = " + testCase.minSupport);
             long startTime = System.currentTimeMillis();
 
             try {
+                // Gọi Apriori để khai phá itemset
                 Apriori.executeAndExport(inputPath, baseOutputPath, testCase.minSupport);
 
                 long duration = System.currentTimeMillis() - startTime;
@@ -54,9 +77,13 @@ public class AprioriTester {
         System.out.println("Hoàn thành toàn bộ quá trình kiểm thử!");
     }
 
+    /**
+     * Inner class cấu hình dataset
+     * Lưu tên file dataset và ngưỡng minSupport tương ứng
+     */
     static class DatasetConfig {
-        String fileName;
-        double minSupport;
+        String fileName;      // Tên file (ví dụ: "chess.txt")
+        double minSupport;    // Ngưỡng support (ví dụ: 0.9 cho 90%)
 
         DatasetConfig(String fileName, double minSupport) {
             this.fileName = fileName;
