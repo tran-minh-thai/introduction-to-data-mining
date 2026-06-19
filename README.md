@@ -1,24 +1,37 @@
-# Frequent Itemset Mining & Rule Generation
+# Introduction to Data Mining
 
-Dự án này cung cấp mã nguồn Java cơ bản cho các thuật toán khai thác tập phổ biến và sinh luật kết hợp, bao gồm **Apriori** và **FP-Growth**. Hệ thống được thiết kế đặc biệt để phục vụ phân tích học thuật, tích hợp sẵn bộ đo lường (profiling) chi tiết để đánh giá mức tiêu thụ bộ nhớ (Peak Memory) và thời gian thực thi.
+This repository contains the source code, algorithmic implementations, and experimental setups designed for the **Data Mining** course. It features comprehensive modules for frequent itemset mining, association rule generation, as well as fundamental classification and clustering algorithms.
 
-## Yêu cầu môi trường
-* **Ngôn ngữ:** Java 8 hoặc cao hơn.
-* **IDE:** IntelliJ IDEA (khuyên dùng).
-* **Tài nguyên:** Khuyến nghị thiết lập Heap Size tối thiểu `-Xmx4G` khi chạy với các tập dữ liệu thưa (sparse datasets) để tránh tràn bộ nhớ.
+The codebase is optimized for performance analysis, incorporating built-in profiling mechanisms to track memory consumption (Peak Memory) and execution time across various dataset sizes.
 
-## Cấu trúc dữ liệu đầu vào (Datasets)
-Hệ thống nhận đầu vào là các file text chứa dữ liệu giao dịch (ví dụ: `chess.txt`, `retail.txt`). Mỗi dòng biểu diễn một giao dịch, các item (số nguyên) được phân tách bằng khoảng trắng:
+---
+
+## Features & Modules
+
+### 1. Frequent Itemset Mining
+* **Apriori Algorithm:** A level-wise, breadth-first search approach utilizing join and prune steps with explicit logging of candidate sizes ($C_k$), frequent itemset sizes ($L_k$), and subset checks.
+* **FP-Growth Algorithm:** A depth-first search approach utilizing a compact Frequent Pattern Tree (FP-Tree) structure. Features include tracking of global node counts, conditional trees built, and data compression ratios.
+
+### 2. Association Rule Generation
+* **Rule Generator:** An Apriori-based rule generation algorithm that extracts strong association rules from frequent itemsets using a minimum confidence threshold (`minConf`).
+* **Advanced Metrics:** Automatically calculates evaluation metrics including **Support**, **Confidence**, **Lift**, and **Conviction** to filter and rank rules.
+
+### 3. Classification & Clustering
+* Includes fundamental algorithms and frameworks for dataset partitioning, pattern distribution mapping, and benchmarking against State-of-the-Art (SOTA) baselines.
+
+---
+
+## Environment & Prerequisites
+* **Language:** Java 8 or higher.
+* **IDE:** IntelliJ IDEA Ultimate (recommended) or any standard Java IDE.
+* **OS:** macOS / Windows / Linux.
+* **Resource Recommendation:** For dense or sparse experimental datasets (e.g., `chess.txt`, `retail.txt`), it is highly recommended to increase the JVM Heap Size (e.g., add `-Xmx4G` to VM options) to prevent `OutOfMemoryError` during recursive tree mining or intensive candidate generations.
+
+---
+
+## Dataset Format
+Input datasets must be configured as standard transaction text files. Each line represents a unique transaction, with individual items (represented as integers) separated by whitespace:
+```text
 1 3 4
 2 3 5
 1 2 3 5
-
-## Hướng dẫn sử dụng
-Để chạy kiểm thử tự động với nhiều cấu hình ngưỡng khác nhau, vui lòng thực thi các lớp điều phối (Tester):
-1. Cấu hình danh sách file và `minSupport` bên trong `AprioriTester.java` hoặc `FPGrowthTester.java`, sau đó chạy chương trình.
-2. Để sinh luật kết hợp, cấu hình `minConfidence` và chạy `RuleGeneratorTester.java` dựa trên kết quả đã sinh ra từ bước 1.
-
-## Kết quả đầu ra (Output)
-Toàn bộ kết quả sẽ được lưu tự động vào thư mục `results/` với cấu trúc tên file phân biệt rõ theo ngưỡng:
-* **File `.txt`**: Danh sách chi tiết các mẫu phổ biến hoặc luật kết hợp.
-* **File `.csv`**: Báo cáo Profiling bao gồm các số liệu quan trọng: thời gian I/O, thời gian thuật toán, số lượng nhánh bị tỉa (Pruned branches), nén cây FP-Tree, và Peak Memory.
